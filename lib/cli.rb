@@ -40,4 +40,16 @@ class CLI
     end
     return true
   end
+
+  def next_token
+    handle_token do
+      $stdout.print "> "
+      $stdin.gets.chomp
+    end
+  end
+
+  def run
+    $stdout.puts "Enter 'q' to exit"
+    begin; end while next_token
+  end
 end

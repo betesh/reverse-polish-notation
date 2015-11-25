@@ -69,4 +69,35 @@ describe CLI do
       expect(subject.handle_token { raise StandardError, "Something wierd happened" }).to eq(true)
     end
   end
+
+  describe "#run" do
+    it "should run the program" do
+      expect($stdout).to receive(:puts).once.with("Enter 'q' to exit")
+
+      expect($stdin).to receive(:gets).once.and_return("10\n")
+      expect($stdout).to receive(:print).exactly(8).times.with("> ")
+      expect($stdout).to receive(:puts).once.with(10)
+
+      expect($stdin).to receive(:gets).once.and_return("9\n")
+      expect($stdout).to receive(:puts).once.with(9)
+
+      expect($stdin).to receive(:gets).once.and_return("7.5\n")
+      expect($stdout).to receive(:puts).once.with(7.5)
+
+      expect($stdin).to receive(:gets).once.and_return("/\n")
+      expect($stdout).to receive(:puts).once.with(1.2)
+
+      expect($stdin).to receive(:gets).once.and_return("+\n")
+      expect($stdout).to receive(:puts).once.with(11.2)
+
+      expect($stdin).to receive(:gets).once.and_return("A\n")
+      expect($stdout).to receive(:puts).once.with("'A' is not a valid input")
+
+      expect($stdin).to receive(:gets).once.and_return("-\n")
+      expect($stdout).to receive(:puts).once.with("The - operator requires 2 arguments.  Only 1 arguments were given")
+
+      expect($stdin).to receive(:gets).and_return("q\n")
+      subject.run
+    end
+  end
 end
